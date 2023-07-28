@@ -1,3 +1,8 @@
 *
 !.gitignore
 !README.md
+!Makefile
+!src
+!src/**/*
+!test
+!test/**/*

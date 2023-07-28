@@ -1,2 +1,2 @@
-# c-rex
- Simple regex library written in an ancient dinosaur programming language called C
+# crep
+ Simple and crappy grep regex searcher.
