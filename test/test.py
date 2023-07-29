@@ -1,18 +1,26 @@
-import pathlib, subprocess
+import attrs, pathlib, subprocess
 
+@attrs.define
+class Testcase:
+  pattern: str
+  filename: str
+  expected: str
+
+# TODO: more testcases
 TESTCASES = (
-  ('hello', 'test_hello.in', 'hello\n'),
-  ('henlo', 'test_hello.in', ''),
-  ('hel.o', 'test_hello.in', 'hello\n'),
-  ('^hel.o', 'test_hello.in', ''), # TODO: not implemented yet
-  ('hello$', 'test_hello.in', 'hello\n'),
-  ('hello\n$', 'test_hello.in', ''),
-  ('..l*o.*', 'test_hello.in', 'hello\n'),
-  (
-    '.*annotate.*',
-    'test_rust_excerpt.in',
-    'Rust won’t let us annotate a type with Copy if the type,'
-    ' or any of its parts, has implemented the Drop trait.\n'
+  Testcase(pattern='hello', filename='test_hello.in', expected='hello\n'),
+  Testcase(pattern='henlo', filename='test_hello.in', expected=''),
+  Testcase(pattern='hel.o', filename='test_hello.in', expected='hello\n'),
+  Testcase(pattern='^hel.o', filename='test_hello.in', expected=''), # TODO: not implemented yet
+  Testcase(pattern='hello$', filename='test_hello.in', expected='hello\n'),
+  Testcase(pattern='hello\n$', filename='test_hello.in', expected=''),
+  Testcase(pattern='..l*o.*', filename='test_hello.in', expected='hello\n'),
+  Testcase(
+    pattern='.*annotate.*',
+    filename='test_rust_excerpt.in',
+    expected=
+      'Rust won’t let us annotate a type with Copy if the type,'
+      ' or any of its parts, has implemented the Drop trait.\n'
   )
 )
 
@@ -27,7 +35,7 @@ def run_crep(*argv):
     print(f"Error: run_crep(): {e}")
 
 def run_test(testcase):
-  pattern, filename, expected = testcase
+  pattern, filename, expected = attrs.astuple(testcase)
   filename = f'testcases/{filename}'
   result = run_crep(pattern, filename)
   passed = result == expected
