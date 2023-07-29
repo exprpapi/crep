@@ -3,7 +3,6 @@ CFLAGS = --std=c2x -g -lm -Wall -Wextra -Wpedantic
 TARGET = crep
 SRCDIR = src
 SOURCE = $(SRCDIR)/$(TARGET).c
-TESTER = test/test.py
 
 .PHONY: default
 default: $(TARGET)
@@ -13,8 +12,8 @@ clean:
 	rm -f $(TARGET)
 
 .PHONY: test
-test:
-	python $(TESTER)
+test: default
+	cd test && python test.py
 
 $(TARGET): $(SOURCE)
 	$(CC) $(CFLAGS) -o $@ $<
